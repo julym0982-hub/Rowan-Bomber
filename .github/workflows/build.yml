@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Build with Buildozer
-        uses: herberthamaral/buildozer-action@master
+      - name: buildozer action
+        uses: jreleaser/buildozer-action@v0
         with:
           command: buildozer android debug
