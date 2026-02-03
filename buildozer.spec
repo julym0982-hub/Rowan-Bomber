@@ -1,27 +1,42 @@
-[app]
-title = Lulucat Bomber
-package.name = lulucatbomber
-package.domain = org.test
-source.dir = .
-source.include_exts = py,png,jpg,kv,atlas,json
-version = 0.1
+name: CI
+on:
+  push:
+    branches: [ main ]
 
-# Requirements ကို ရှင်းရှင်းလေးပဲ ထားထားပါတယ်
-requirements = python3,kivy==2.3.0,requests,openssl
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-orientation = portrait
-fullscreen = 0
+    steps:
+      - uses: actions/checkout@v4
 
-# Permission တွေကို အမှန်ကန်ဆုံး ပြင်ပေးထားပါတယ်
-android.permissions = INTERNET, SEND_SMS, WRITE_EXTERNAL_STORAGE
-android.api = 31
-android.minapi = 21
+      - name: Get Date
+        id: get-date
+        run: |
+          echo "date=$(/bin/date -u "+%Y%m%d")" >> $GITHUB_OUTPUT
+        shell: bash
 
-# ဒါက အရေးကြီးဆုံးအချက်ပါ
-android.accept_sdk_license = True
-android.archs = arm64-v8a, armeabi-v7a
-android.allow_backup = True
+      - name: Cache Buildozer global directory
+        uses: actions/cache@v4
+        with:
+          path: .buildozer_global
+          key: buildozer-global-${{ hashFiles('buildozer.spec') }}
 
-[buildozer]
-log_level = 2
-warn_on_root = 1
+      - name: Cache Buildozer directory
+        uses: actions/cache@v4
+        with:
+          path: .buildozer
+          key: ${{ runner.os }}-${{ steps.get-date.outputs.date }}-${{ hashFiles('buildozer.spec') }}
+
+      - name: Build with Buildozer
+        uses: ArtemSBulgakov/buildozer-action@v1
+        id: buildozer
+        with:
+          command: buildozer android debug
+          buildozer_version: master
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: ${{ steps.buildozer.outputs.filename }}
