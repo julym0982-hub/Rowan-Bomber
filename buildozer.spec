@@ -19,7 +19,7 @@ source.include_exts = py,png,jpg,kv,atlas,json
 version = 0.1
 
 # (list) Application requirements
-# requests နဲ့ openssl ကို ထည့်ပေးထားလို့ အင်တာနက်ကနေ SMS ပို့တာ အဆင်ပြေပါလိမ့်မယ်
+# requests, openssl, urllib3 တို့ကို အင်တာနက်သုံးဖို့ ထည့်ပေးထားပါတယ်
 requirements = python3,kivy==2.3.0,requests,openssl,urllib3,charset-normalizer,idna
 
 # (list) Supported orientations
@@ -33,7 +33,7 @@ orientation = portrait
 fullscreen = 0
 
 # (list) Permissions 
-# SMS ပို့ဖို့နဲ့ အင်တာနက်သုံးဖို့ Permission တွေ ထည့်ထားပါတယ်
+# အင်တာနက်သုံးဖို့နဲ့ SMS ပို့ဖို့အတွက် လိုအပ်တဲ့ permission တွေပါ
 android.permissions = INTERNET, SEND_SMS, WRITE_EXTERNAL_STORAGE, READ_PHONE_STATE
 
 # (int) Target Android API
@@ -43,7 +43,7 @@ android.api = 31
 android.minapi = 21
 
 # (bool) If True, then automatically accept SDK license
-# ဒါက GitHub မှာ အလုပ်လုပ်ဖို့ အရေးကြီးဆုံး အချက်ပါ
+# GitHub Actions မှာ အောင်မြင်ဖို့အတွက် ဒါက အရေးကြီးဆုံးပါ
 android.accept_sdk_license = True
 
 # (list) The Android archs to build for
