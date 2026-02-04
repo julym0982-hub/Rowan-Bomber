@@ -3,7 +3,8 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    # 20.04 က Buildozer အတွက် အငြိမ်ဆုံး version ပါ
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
 
@@ -24,9 +25,8 @@ jobs:
 
       - name: Build with Buildozer
         run: |
-          # SDK license တွေကို အကုန် yes လို့ အလိုအလျောက် ဖြေခိုင်းထားပါတယ်
+          # SDK license အကုန် yes လို့ ဖြေခိုင်းထားပါတယ်
           yes | buildozer android debug
-        continue-on-error: false
 
       - name: Upload Artifact
         if: always()
