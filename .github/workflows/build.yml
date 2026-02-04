@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -17,17 +17,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential libffi-dev gettext git autoconf automake libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake zip unzip openjdk-17-jdk
 
-      - name: Install Buildozer
+      - name: Install Buildozer and Cython
         run: |
           pip install --upgrade pip
           pip install buildozer cython==0.29.33
 
       - name: Build with Buildozer
         run: |
+          # SDK license တွေကို အကုန် yes လို့ အလိုအလျောက် ဖြေခိုင်းထားပါတယ်
           yes | buildozer android debug
-        # ဒီနေရာမှာ buildozer ကို တိုက်ရိုက် run တာမို့လို့ chown error လုံးဝ မတက်တော့ပါဘူး
+        continue-on-error: false
 
       - name: Upload Artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: package
